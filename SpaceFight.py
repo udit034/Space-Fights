@@ -25,6 +25,15 @@ class Sprite( turtle.Turtle ):
 		
 		if self.xcor() > 290 or self.ycor() > 290 or self.xcor() < -290 or self.ycor() < -290:
 			self.rt(60)
+			
+	def is_collision( self, other ):
+		if ( self.xcor() >= (other.xcor() - 20) ) and \
+		( self.xcor() <= (other.xcor() + 20) ) and \
+		( self.ycor() >= (other.ycor() - 20) ) and \
+		( self.ycor() <= (other.xcor() + 20) ):
+			return True
+		else:
+			return False	
 		
 class Player( Sprite ):
 	def __init__( self, spriteshape, color, startx=0, starty=0, speed=1, lives=3 ):
@@ -42,6 +51,13 @@ class Player( Sprite ):
 		
 	def turn_right( self ):
 		self.rt( 45 )
+		
+
+			
+class Enemy( Sprite ):
+	def __init__( self, spriteshape="circle", color="red", startx=-100, starty=0, speed=6):
+		Sprite.__init__( self, spriteshape, color, startx, starty, speed )
+		
 		
 class Game():
 	def __init__(self, level=1, score=0, state="playing", lives=3 ):
@@ -69,6 +85,7 @@ game = Game()
 game.draw_border()
 		
 player = Player( "triangle", "white", 0, 0, 1, 3 )
+enemy = Enemy( "circle", "red", -100, 0, 6 )
 turtle.onkey( player.turn_left, "Left" )
 turtle.onkey( player.turn_right, "Right" )
 turtle.onkey( player.accelerate, "Up" )
@@ -77,7 +94,12 @@ turtle.listen()
 
 while True:
 	player.move()
+	enemy.move()
 	
+	if player.is_collision( enemy ):
+		x = random.randint( -250, 250 )
+		y = random.randint( -250, 250 )
+		enemy.goto( x, y )
 
 
 delay = input( "Enter" )
