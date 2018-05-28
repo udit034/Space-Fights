@@ -1,6 +1,7 @@
 import os
 import random
 import turtle
+import winsound
 
 turtle.fd(0)
 turtle.speed(0)
@@ -61,6 +62,7 @@ class Missile( Sprite ):
 		
 	def fire( self ):
 		if self.status == "ready":
+			#winsound.PlaySound('laser.wav', winsound.SND_FILENAME)
 			self.goto( player.xcor(), player.ycor() )
 			self.setheading( player.heading() )
 			self.status = "firing"
@@ -151,6 +153,7 @@ while True:
 		enemy.goto( x, y )
 	
 	if missile.is_collision( ally ):
+		#winsound.PlaySound('explosion.wav', winsound.SND_FILENAME)
 		x = random.randint( -250, 250 )
 		y = random.randint( -250, 250 )
 		ally.goto( x, y )
@@ -160,6 +163,7 @@ while True:
 		
 	
 	if missile.is_collision( enemy ):
+		#winsound.PlaySound('explosion.wav', winsound.SND_FILENAME)
 		x = random.randint( -250, 250 )
 		y = random.randint( -250, 250 )
 		enemy.goto( x, y )
