@@ -120,6 +120,7 @@ class Game():
 		self.pen.pendown()
 		
 	def update_status( self ):
+		self.pen.undo()
 		msg = "Score: %s"%(self.score)
 		self.pen.penup()
 		self.pen.goto( -300, 310 )
