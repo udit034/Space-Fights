@@ -130,9 +130,16 @@ game = Game()
 game.draw_border()
 		
 player = Player( "triangle", "white", 0, 0, 1, 4 )
-enemy = Enemy( "circle", "red", -100, 0, 6 )
 missile = Missile( "triangle", "yellow", 0, 0 )
-ally = Ally( "square", "blue", 0, 0 )
+
+enemies = []
+for i in range( 1 ):
+	enemies.append( Enemy( "circle", "red", -100, 0, 6 ) )
+
+	
+allies = []
+for i in range( 1 ):
+	allies.append( Ally( "square", "blue", 0, 0 ) )
 
 
 turtle.onkey( player.turn_left, "Left" )
@@ -144,30 +151,33 @@ turtle.listen()
 
 while True:
 	player.move()
-	enemy.move()
 	missile.move()
-	ally.move()
 	
-	if player.is_collision( enemy ):
-		x = random.randint( -250, 250 )
-		y = random.randint( -250, 250 )
-		enemy.goto( x, y )
+	for enemy in enemies:
+		enemy.move()
+		if player.is_collision( enemy ):
+			x = random.randint( -250, 250 )
+			y = random.randint( -250, 250 )
+			enemy.goto( x, y )
+		
+		if missile.is_collision( enemy ):
+			#winsound.PlaySound('explosion.wav', winsound.SND_FILENAME)
+			x = random.randint( -250, 250 )
+			y = random.randint( -250, 250 )
+			enemy.goto( x, y )
+			missile.status = "ready"
+			game.score += 100
+			game.update_status()
 	
-	if missile.is_collision( ally ):
-		#winsound.PlaySound('explosion.wav', winsound.SND_FILENAME)
-		x = random.randint( -250, 250 )
-		y = random.randint( -250, 250 )
-		ally.goto( x, y )
-		missile.status = "ready"
-		game.score -= 100
-		game.update_status()
+	for ally in allies:
+		ally.move()
+		if missile.is_collision( ally ):
+			#winsound.PlaySound('explosion.wav', winsound.SND_FILENAME)
+			x = random.randint( -250, 250 )
+			y = random.randint( -250, 250 )
+			ally.goto( x, y )
+			missile.status = "ready"
+			game.score -= 100
+			game.update_status()
 		
 	
-	if missile.is_collision( enemy ):
-		#winsound.PlaySound('explosion.wav', winsound.SND_FILENAME)
-		x = random.randint( -250, 250 )
-		y = random.randint( -250, 250 )
-		enemy.goto( x, y )
-		missile.status = "ready"
-		game.score += 100
-		game.update_status()
