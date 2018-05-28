@@ -10,6 +10,16 @@ turtle.ht()
 turtle.setundobuffer(1)
 turtle.tracer(1)
 
+wn = turtle.Screen()
+wn.bgcolor("black")
+wn.title("Space Fights")
+wn.bgpic("b1.gif")
+
+turtle.register_shape("s1.gif")
+turtle.register_shape("s2.gif")
+turtle.register_shape("s3.gif")
+turtle.register_shape("l1.gif")
+
 class Sprite( turtle.Turtle ):
 	def __init__( self, spriteshape, color, startx, starty, speed ):
 		turtle.Turtle.__init__( self, shape=spriteshape )
@@ -39,6 +49,7 @@ class Player( Sprite ):
 	def __init__( self, spriteshape, color, startx=0, starty=0, speed=4, lives=3 ):
 		Sprite.__init__( self, spriteshape, color, startx, starty, speed )
 		self.lives = lives
+		self.shapesize( 50,50, 50 )
 		
 	def accelerate( self ):
 		self.speed += 1
@@ -55,7 +66,7 @@ class Player( Sprite ):
 class Missile( Sprite ):
 	def __init__( self, spriteshape, color, startx, starty, speed=20 ):
 		Sprite.__init__( self, spriteshape, color, startx, starty, speed=20 )
-		self.shapesize( stretch_wid=0.1, stretch_len=1, outline=None)
+		self.shapesize( stretch_wid=2, stretch_len=2, outline=None)
 		self.speed = speed
 		self.status = "ready"
 		self.goto( -1000, 1000 )
@@ -129,17 +140,17 @@ class Game():
 game = Game()		
 game.draw_border()
 		
-player = Player( "triangle", "white", 0, 0, 1, 4 )
-missile = Missile( "triangle", "yellow", 0, 0 )
+player = Player( "s3.gif", "white", 0, 0, 1, 4 )
+missile = Missile( "l1.gif", "yellow", 0, 0 )
 
 enemies = []
-for i in range( 1 ):
-	enemies.append( Enemy( "circle", "red", -100, 0, 6 ) )
+for i in range( 4 ):
+	enemies.append( Enemy( "s1.gif", "red", -100, 0, 6 ) )
 
 	
 allies = []
-for i in range( 1 ):
-	allies.append( Ally( "square", "blue", 0, 0 ) )
+for i in range( 4 ):
+	allies.append( Ally( "s2.gif", "blue", 0, 0 ) )
 
 
 turtle.onkey( player.turn_left, "Left" )
@@ -161,7 +172,7 @@ while True:
 			enemy.goto( x, y )
 		
 		if missile.is_collision( enemy ):
-			#winsound.PlaySound('explosion.wav', winsound.SND_FILENAME)
+			winsound.PlaySound('explosion.wav', winsound.SND_FILENAME)
 			x = random.randint( -250, 250 )
 			y = random.randint( -250, 250 )
 			enemy.goto( x, y )
@@ -172,7 +183,7 @@ while True:
 	for ally in allies:
 		ally.move()
 		if missile.is_collision( ally ):
-			#winsound.PlaySound('explosion.wav', winsound.SND_FILENAME)
+			winsound.PlaySound('explosion.wav', winsound.SND_FILENAME)
 			x = random.randint( -250, 250 )
 			y = random.randint( -250, 250 )
 			ally.goto( x, y )
